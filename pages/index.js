@@ -7,6 +7,7 @@ const Dummuy_Meetups = [
       "https://upload.wikimedia.org/wikipedia/commons/d/d3/Stadtbild_M%C3%BCnchen.jpg",
     title: "A First Meetup",
     address: "Some address 5, 12345",
+    description: "This is a first meetup!",
   },
   {
     id: "m2",
@@ -14,6 +15,7 @@ const Dummuy_Meetups = [
       "https://upload.wikimedia.org/wikipedia/commons/d/d3/Stadtbild_M%C3%BCnchen.jpg",
     title: "A Second Meetup",
     address: "Some address 5, 12345",
+    description: "This is a second meetup!",
   },
 ];
 
