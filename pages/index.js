@@ -17,12 +17,22 @@ const Dummuy_Meetups = [
   },
 ];
 
-function HomePage() {
+function HomePage(props) {
   return (
     <>
-      <MeetupList meetups={Dummuy_Meetups} />
+      <MeetupList meetups={props.meetups} />
     </>
   );
+}
+
+export async function getStaticProps() {
+  return {
+    // props객체가 getStaticProps에서 설정한 props의 객체의 객체가됨
+    props: {
+      meetups: Dummuy_Meetups,
+    },
+    revalidate: 60,
+  };
 }
 
 export default HomePage;
