@@ -27,7 +27,6 @@ function HomePage(props) {
 
 export async function getStaticProps() {
   return {
-    // props객체가 getStaticProps에서 설정한 props의 객체의 객체가됨
     props: {
       meetups: Dummuy_Meetups,
     },
