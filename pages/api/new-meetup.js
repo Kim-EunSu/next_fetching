@@ -16,7 +16,7 @@ async function handler(req, res) {
 
     // insertOne을 통해 컬렉션에 새문서 삽입
     // 데이터베이스에 전체 data객체를 입력했으므로 구조분해 방식을 사용할 필요가 없음
-    const result = await meetupsCollection.insertOne({ data });
+    const result = await meetupsCollection.insertOne(data);
 
     console.log(result);
 
