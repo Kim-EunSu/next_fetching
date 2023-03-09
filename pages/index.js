@@ -1,29 +1,17 @@
+import Head from "next/head";
 import { MongoClient } from "mongodb";
-
 import MeetupList from "../components/meetups/MeetupList";
-
-// const Dummuy_Meetups = [
-//   {
-//     id: "m1",
-//     image:
-//       "https://upload.wikimedia.org/wikipedia/commons/d/d3/Stadtbild_M%C3%BCnchen.jpg",
-//     title: "A First Meetup",
-//     address: "Some address 5, 12345",
-//     description: "This is a first meetup!",
-//   },
-//   {
-//     id: "m2",
-//     image:
-//       "https://upload.wikimedia.org/wikipedia/commons/d/d3/Stadtbild_M%C3%BCnchen.jpg",
-//     title: "A Second Meetup",
-//     address: "Some address 6, 67890",
-//     description: "This is a second meetup!",
-//   },
-// ];
 
 function HomePage(props) {
   return (
     <>
+      <Head>
+        <title>React Meetups</title>
+        <meta
+          name="description"
+          content="Browse a huge list of highly active React meetups"
+        ></meta>
+      </Head>
       <MeetupList meetups={props.meetups} />
     </>
   );
