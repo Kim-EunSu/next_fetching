@@ -1,49 +1,71 @@
+import { MongoClient, ObjectId } from "mongodb";
 import MeetupDetail from "../../components/meetups/MeetupDetail";
 
-function MeetupDetails() {
+function MeetupDetails(props) {
   return (
     <>
       <MeetupDetail
-        image="https://upload.wikimedia.org/wikipedia/commons/d/d3/Stadtbild_M%C3%BCnchen.jpg"
-        title="A First Meetup"
-        address="Some Street 5, Some City"
-        description="The meetup description"
+        image={props.meetupData.image}
+        title={props.meetupData.title}
+        address={props.meetupData.address}
+        description={props.meetupData.description}
       />
     </>
   );
 }
 
 export async function getStaticPaths() {
+  const client = await MongoClient.connect(
+    "mongodb+srv://EunSu:PUbr5mftJ2cO3vw6@cluster0.wqzl0ym.mongodb.net/?retryWrites=true&w=majority"
+  );
+
+  const db = client.db("meetups");
+
+  const meetupsCollection = db.collection("meetups");
+
+  //모든문서를 가져올수 있도록 첫번째 인수는 빈객체
+  // 즉, 문서객체를 가져오되 각각은 ID만 포함하고 다른 필드는 포함하지X
+  const meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
+
+  client.close();
+
   return {
     fallback: false,
-    paths: [
-      {
-        params: {
-          meetupId: "m1",
-        },
-      },
-      {
-        params: {
-          meetupId: "m2",
-        },
-      },
-    ],
+    // paths를 하드코딩하는대신 meetups로 ID가 있는 문서인 모든 meetup항목을 객체에 매칭할 수 있음
+    // => 경로 배열을 동적으로 생성
+    paths: meetups.map((meetup) => ({
+      params: { meetupId: meetup._id.toString() },
+    })),
   };
 }
 
 export async function getStaticProps(context) {
   const meetupId = context.params.meetupId;
-  console.log(meetupId);
+
+  const client = await MongoClient.connect(
+    "mongodb+srv://EunSu:PUbr5mftJ2cO3vw6@cluster0.wqzl0ym.mongodb.net/?retryWrites=true&w=majority"
+  );
+
+  const db = client.db("meetups");
+
+  const meetupsCollection = db.collection("meetups");
+
+  //findOne은 하나의 문서만 찾음
+  //meetupId를 ObjectId로 감싸주면 문자열이 ObjectId객체로 변환
+  const selectedMeetup = await meetupsCollection.findOne({
+    _id: ObjectId(meetupId),
+  });
+
+  client.close();
 
   return {
     props: {
       meetupData: {
-        image:
-          "https://upload.wikimedia.org/wikipedia/commons/d/d3/Stadtbild_M%C3%BCnchen.jpg",
-        id: meetupId,
-        title: "A First Meetup",
-        address: "Some Street 5, Some City",
-        description: "This is a first meetup",
+        id: selectedMeetup._id.toString(),
+        title: selectedMeetup.title,
+        address: selectedMeetup.address,
+        image: selectedMeetup.image,
+        description: selectedMeetup.description,
       },
     },
   };
